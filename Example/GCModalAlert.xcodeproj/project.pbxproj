@@ -39,11 +39,11 @@
 		607FACE51AFB9204008FA782 /* GCModalAlert_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GCModalAlert_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		853EBB017A755E06CB8CA7B0 /* GCModalAlert.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = GCModalAlert.podspec; path = ../GCModalAlert.podspec; sourceTree = "<group>"; };
+		853EBB017A755E06CB8CA7B0 /* GCModalAlert.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = GCModalAlert.podspec; path = ../GCModalAlert.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E66D892F6A11931503AC722 /* Pods-GCModalAlert_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCModalAlert_Tests.debug.xcconfig"; path = "Target Support Files/Pods-GCModalAlert_Tests/Pods-GCModalAlert_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		AAD136D99308F98E2E47FC6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		AAD136D99308F98E2E47FC6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C43B7E02C9C30935DE3B37D0 /* Pods-GCModalAlert_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCModalAlert_Tests.release.xcconfig"; path = "Target Support Files/Pods-GCModalAlert_Tests/Pods-GCModalAlert_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		D16C4AF790A51CA822C8A330 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		D16C4AF790A51CA822C8A330 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D93551AAAD114C9C688EF9CF /* Pods_GCModalAlert_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCModalAlert_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1A3DBF2A393FB83AF70C976 /* Pods-GCModalAlert_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCModalAlert_Example.release.xcconfig"; path = "Target Support Files/Pods-GCModalAlert_Example/Pods-GCModalAlert_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F3E07A912591012DE57F22C5 /* Pods_GCModalAlert_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCModalAlert_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +156,6 @@
 				9E66D892F6A11931503AC722 /* Pods-GCModalAlert_Tests.debug.xcconfig */,
 				C43B7E02C9C30935DE3B37D0 /* Pods-GCModalAlert_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +226,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);

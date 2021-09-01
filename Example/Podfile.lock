@@ -1,0 +1,16 @@
+PODS:
+  - GCModalAlert (0.1.0)
+
+DEPENDENCIES:
+  - GCModalAlert (from `../`)
+
+EXTERNAL SOURCES:
+  GCModalAlert:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GCModalAlert: b9a469072166826f2a2802e51d8dbb8d96569ae8
+
+PODFILE CHECKSUM: 2a1ea73bf830679d5086846a329bb5c32e83435b
+
+COCOAPODS: 1.10.1
