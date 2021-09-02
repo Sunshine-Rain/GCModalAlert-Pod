@@ -11,14 +11,15 @@ open class GCModalManager {
     public static let defaultManager = GCModalManager()
     
     open var modalObjects: [Modalable] = []
-    open var backgroundView: UIView
+    open var backgroundView: GCModalBackground
     open var currentModal: Modalable?
     
     
-    public init(_ bgView: UIView = UIView()) {
+    public init(_ bgView: GCModalBackground = GCModalBackground()) {
         backgroundView = bgView
-        
-        setupBackgroundGesture()
+        backgroundView.tapAction = { [unowned self] in
+            self.actionTap()
+        }
     }
     
     open func executeOnMainThread(task: @escaping VoidClosure) {
@@ -77,11 +78,6 @@ open class GCModalManager {
             backgroundView.frame = keyWindow.bounds
             keyWindow.addSubview(backgroundView)
         }
-    }
-    
-    open func setupBackgroundGesture() {
-        let tagGesture = UITapGestureRecognizer(target: self, action: #selector(actionTap(_:)))
-        backgroundView.addGestureRecognizer(tagGesture)
     }
     
     open func removeBackgroundIfNeeded() {
@@ -144,7 +140,7 @@ open class GCModalManager {
     }
     
     // MARK: Actions
-    @objc open func actionTap(_ sender: Any) {
+    open func actionTap() {
         guard let current = currentModal else {
             return
         }
