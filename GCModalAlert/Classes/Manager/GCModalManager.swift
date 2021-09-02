@@ -15,17 +15,28 @@ open class GCModalManager {
     open var currentModal: Modalable?
     
     
-    init(_ bgView: UIView = UIView()) {
+    public init(_ bgView: UIView = UIView()) {
         backgroundView = bgView
         
         setupBackgroundGesture()
     }
     
+    open func executeOnMainThread(task: @escaping VoidClosure) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async {
+                task()
+            }
+            return
+        }
+        
+        task()
+    }
+    
     open func add(_ modal: Modalable) {
-        objc_sync_enter(self)
-        addModalIfNeeded(modal: modal)
-        showModalIfNeeded()
-        objc_sync_exit(self)
+        executeOnMainThread {
+            self.addModalIfNeeded(modal: modal)
+            self.showModalIfNeeded()
+        }
     }
     
     open func showModalIfNeeded() {
@@ -82,7 +93,6 @@ open class GCModalManager {
     open func addModalIfNeeded(modal: Modalable) {
         let config = modal.modalViewConfig
         let currentIdentifier = modal.identifier
-        print("The identifier is: \(currentIdentifier)")
         
         // ignoreLatest
         if config.beahviorWhileDuplicate == .ignoreLatest,
@@ -91,7 +101,6 @@ open class GCModalManager {
             return
         }
         
-        objc_sync_enter(self)
         // useLastest
         if config.beahviorWhileDuplicate == .useLastest {
             modalObjects.removeAll { currentIdentifier == $0.identifier }
@@ -102,7 +111,6 @@ open class GCModalManager {
         modalObjects.append(modal)
         modalObjects.sort { $0.modalViewConfig.priority > $1.modalViewConfig.priority }
         showModalIfNeeded()
-        objc_sync_exit(self)
     }
     
     open func getNeedShowModal() -> Modalable? {
@@ -115,13 +123,14 @@ open class GCModalManager {
     }
     
     open func triggerDismiss() {
+        assert(Thread.isMainThread, "Modal dismiss should be executed on main thread.")
         // will dismiss
         currentModal?.modalViewLifecycle.modalViewWillDisappear?()
         
         // animations
         disappearAnimation(for: currentModal) { [weak self] _ in
+            assert(Thread.isMainThread, "Animations finish closure should be executed on main thread.")
             if let self = self {
-                objc_sync_enter(self)
                 // did dismiss
                 self.currentModal?.modalView.removeFromSuperview()
                 self.currentModal?.modalViewLifecycle.modalViewDidDisappear?()
@@ -130,7 +139,6 @@ open class GCModalManager {
                 
                 // show next
                 self.showModalIfNeeded()
-                objc_sync_exit(self)
             }
         }
     }

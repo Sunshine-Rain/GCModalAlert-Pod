@@ -90,6 +90,10 @@ class ViewController: UIViewController {
             GCModalManager.defaultManager.add(self.modal)
             GCModalManager.defaultManager.add(self.modal3)
             GCModalManager.defaultManager.add(self.modal2)
+            
+            self.modal = nil
+            self.modal3 = nil
+            self.modal2 = nil
         }
     }
     
