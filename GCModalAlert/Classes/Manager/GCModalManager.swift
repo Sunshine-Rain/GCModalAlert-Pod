@@ -14,8 +14,11 @@ open class GCModalManager {
     open var backgroundView: GCModalBackground
     open var currentModal: Modalable?
     
+    private let originalAlpha: CGFloat
+    
     
     public init(_ bgView: GCModalBackground = GCModalBackground()) {
+        originalAlpha = bgView.alpha
         backgroundView = bgView
         backgroundView.tapAction = { [unowned self] in
             self.actionTap()
@@ -164,11 +167,9 @@ open class GCModalManager {
         let config = modal.modalViewConfig
         switch config.showAnimationType {
         case .fade:
-            backgroundView.backgroundColor = UIColor.clear
-            modal.modalView.alpha = 0.0
+            backgroundView.alpha = 0.0
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-                modal.modalView.alpha = 1.0
+                self.backgroundView.alpha = self.originalAlpha
             } completion: { finished in
                 completion(finished)
             }
@@ -176,10 +177,10 @@ open class GCModalManager {
             let originFrame = modal.modalView.frame
             let frameBegin = CGRect(x: originFrame.origin.x, y: backgroundView.bounds.size.height, width: originFrame.size.width, height: originFrame.size.height)
             
-            backgroundView.backgroundColor = UIColor.clear
+            backgroundView.alpha = 0.0
             modal.modalView.frame = frameBegin
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+                self.backgroundView.alpha = self.originalAlpha
                 modal.modalView.frame = originFrame
             } completion: { finished in
                 completion(finished)
@@ -203,20 +204,22 @@ open class GCModalManager {
         switch config.dismissAnimationType {
         case .fade:
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.backgroundColor = .clear
+                self.backgroundView.alpha = 0.0
                 modal.modalView.alpha = 0.0
             } completion: { finished in
+                self.backgroundView.alpha = self.originalAlpha
                 completion(finished)
             }
         case .T2B:
             let originFrame = modal.modalView.frame
             let frameEnd = CGRect(x: originFrame.origin.x, y: backgroundView.bounds.size.height, width: originFrame.size.width, height: originFrame.size.height)
             
-            backgroundView.backgroundColor = UIColor.clear
+            backgroundView.alpha = self.originalAlpha
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.backgroundColor = .clear
+                self.backgroundView.alpha = 0.0
                 modal.modalView.frame = frameEnd
             } completion: { finished in
+                self.backgroundView.alpha = self.originalAlpha
                 completion(finished)
             }
         }

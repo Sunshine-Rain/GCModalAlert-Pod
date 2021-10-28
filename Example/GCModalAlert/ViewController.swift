@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        GCModalManager.defaultManager.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        
         var yOffset: CGFloat = 100.0
         let btnHeight: CGFloat = 65.0
         favouriteFoodBtn.frame = CGRect(x: 0, y: yOffset, width: kScreenWidth(), height: btnHeight)
