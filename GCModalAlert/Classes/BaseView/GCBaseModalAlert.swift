@@ -23,11 +23,20 @@ open class GCBaseModalAlert: UIView, Modalable {
     public init(frame: CGRect = .zero, lifecycle: ModalableLifecycle = ModalableLifecycle()) {
         self.modalViewLifecycle = lifecycle
         super.init(frame: frame)
+        
+        basicSetup()
     }
     
     required public init?(coder: NSCoder) {
         self.modalViewLifecycle = ModalableLifecycle()
         super.init(coder: coder)
+        
+        basicSetup()
+    }
+    
+    // Override point.
+    open func basicSetup() {
+        
     }
    
 }

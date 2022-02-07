@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GCModalAlert'
-  s.version          = '0.0.3'
+  s.version          = '0.0.4'
   s.summary          = 'GCModalAlert is an iOS library for modal alert view management.'
 
 # This description is used to generate tags and improve search results.
