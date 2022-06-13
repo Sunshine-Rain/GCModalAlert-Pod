@@ -12,12 +12,17 @@ open class GCBaseModalAlert: UIView, Modalable {
         return self
     }
     
-    open var modalViewLifecycle: ModalableLifecycleType
+    open var modalViewLifecycle: ModalableLifecycleType? = nil
     
-    open var modalViewConfig: ModalableConfig = ModalableConfig()
+    open var modalViewConfig: ModalableConfig? = nil
     
     open var triggerDismiss: VoidClosure!
     
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        basicSetup()
+    }
     
     
     public init(frame: CGRect = .zero, lifecycle: ModalableLifecycle = ModalableLifecycle()) {
@@ -28,7 +33,6 @@ open class GCBaseModalAlert: UIView, Modalable {
     }
     
     required public init?(coder: NSCoder) {
-        self.modalViewLifecycle = ModalableLifecycle()
         super.init(coder: coder)
         
         basicSetup()

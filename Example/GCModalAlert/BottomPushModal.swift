@@ -21,9 +21,12 @@ class BottomPushModal: GCBaseModalAlert {
     override init(frame: CGRect = .zero, lifecycle: ModalableLifecycle = ModalableLifecycle()) {
         super.init(frame: frame, lifecycle: lifecycle)
         setupViews()
-        modalViewConfig.showAnimationType = .B2T
-        modalViewConfig.dismissAnimationType = .T2B
-        modalViewConfig.cancelWhileTapBackground = true
+        
+        var config = ModalableConfig()
+        config.showAnimationType = .B2T
+        config.dismissAnimationType = .T2B
+        config.cancelWhileTapBackground = true
+        modalViewConfig = config
     }
     
     required init?(coder: NSCoder) {

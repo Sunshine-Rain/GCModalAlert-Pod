@@ -14,11 +14,8 @@ open class GCModalManager {
     open var backgroundView: GCModalBackground
     open var currentModal: Modalable?
     
-    private let originalAlpha: CGFloat
-    
     
     public init(_ bgView: GCModalBackground = GCModalBackground()) {
-        originalAlpha = bgView.alpha
         backgroundView = bgView
         backgroundView.tapAction = { [unowned self] in
             self.actionTap()
@@ -50,23 +47,25 @@ open class GCModalManager {
         }
         
         // condition testing
-        guard modal.modalViewConfig.condition?() ?? true else {
+        let config = modal.stableConfig()
+        guard config.condition?() ?? true else {
             showModalIfNeeded()
             return
         }
         
         //
         setupBackgroundViewIfNeeded()
+        backgroundView.backgroundColor = config.backgroundColor
         
         // will show
         currentModal = modal
-        modal.modalViewLifecycle.modalViewWillShow?()
+        modal.modalViewLifecycle?.modalViewWillShow?()
         backgroundView.addSubview(modal.modalView)
         
         // animations
         showAnimation(for: modal) { _ in
             // did show
-            modal.modalViewLifecycle.modalViewDidShow?()
+            modal.modalViewLifecycle?.modalViewDidShow?()
         }
     }
     
@@ -90,7 +89,7 @@ open class GCModalManager {
     }
     
     open func addModalIfNeeded(modal: Modalable) {
-        let config = modal.modalViewConfig
+        let config = modal.modalViewConfig ?? ModalableConfig.default
         let currentIdentifier = modal.identifier
         
         // ignoreLatest
@@ -108,7 +107,7 @@ open class GCModalManager {
         // normal
         modal.triggerDismiss = self.triggerDismiss
         modalObjects.append(modal)
-        modalObjects.sort { $0.modalViewConfig.priority > $1.modalViewConfig.priority }
+        modalObjects.sort { $0.stableConfig().priority > $1.stableConfig().priority }
         showModalIfNeeded()
     }
     
@@ -124,7 +123,7 @@ open class GCModalManager {
     open func triggerDismiss() {
         assert(Thread.isMainThread, "Modal dismiss should be executed on main thread.")
         // will dismiss
-        currentModal?.modalViewLifecycle.modalViewWillDisappear?()
+        currentModal?.modalViewLifecycle?.modalViewWillDisappear?()
         
         // animations
         disappearAnimation(for: currentModal) { [weak self] _ in
@@ -132,7 +131,7 @@ open class GCModalManager {
             if let self = self {
                 // did dismiss
                 self.currentModal?.modalView.removeFromSuperview()
-                self.currentModal?.modalViewLifecycle.modalViewDidDisappear?()
+                self.currentModal?.modalViewLifecycle?.modalViewDidDisappear?()
                 self.currentModal = nil
                 self.removeBackgroundIfNeeded()
                 
@@ -148,8 +147,8 @@ open class GCModalManager {
             return
         }
         
-        current.modalViewConfig.tapBackgroundClosure?()
-        if current.modalViewConfig.cancelWhileTapBackground {
+        current.modalViewConfig?.tapBackgroundClosure?()
+        if current.stableConfig().cancelWhileTapBackground {
             triggerDismiss()
         }
     }
@@ -158,18 +157,18 @@ open class GCModalManager {
     // MARK: Animations
     open func showAnimation(for modal: Modalable, completion: @escaping BoolClosure) {
         // custom animations
-        if modal.modalViewConfig.showAnimationClosure != nil {
-            modal.modalViewConfig.showAnimationClosure?(backgroundView, modal, completion)
+        if modal.modalViewConfig?.showAnimationClosure != nil {
+            modal.modalViewConfig?.showAnimationClosure?(backgroundView, modal, completion)
             return
         }
         
         //
-        let config = modal.modalViewConfig
+        let config = modal.stableConfig()
         switch config.showAnimationType {
         case .fade:
-            backgroundView.alpha = 0.0
+            backgroundView.alpha = config.backgroundHideAlpha
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.alpha = self.originalAlpha
+                self.backgroundView.alpha = config.backgroundDisplayAlpha
             } completion: { finished in
                 completion(finished)
             }
@@ -177,10 +176,10 @@ open class GCModalManager {
             let originFrame = modal.modalView.frame
             let frameBegin = CGRect(x: originFrame.origin.x, y: backgroundView.bounds.size.height, width: originFrame.size.width, height: originFrame.size.height)
             
-            backgroundView.alpha = 0.0
+            backgroundView.alpha = config.backgroundHideAlpha
             modal.modalView.frame = frameBegin
             UIView.animate(withDuration: config.showAnimationDuration) {
-                self.backgroundView.alpha = self.originalAlpha
+                self.backgroundView.alpha = config.backgroundDisplayAlpha
                 modal.modalView.frame = originFrame
             } completion: { finished in
                 completion(finished)
@@ -194,32 +193,32 @@ open class GCModalManager {
         }
         
         // custom animations
-        if modal.modalViewConfig.dismissAnimationClosure != nil {
-            modal.modalViewConfig.dismissAnimationClosure?(backgroundView, modal, completion)
+        if modal.modalViewConfig?.dismissAnimationClosure != nil {
+            modal.modalViewConfig?.dismissAnimationClosure?(backgroundView, modal, completion)
             return
         }
         
         //
-        let config = modal.modalViewConfig
+        let config = modal.stableConfig()
         switch config.dismissAnimationType {
         case .fade:
             UIView.animate(withDuration: config.showAnimationDuration) {
                 self.backgroundView.alpha = 0.0
                 modal.modalView.alpha = 0.0
             } completion: { finished in
-                self.backgroundView.alpha = self.originalAlpha
+                self.backgroundView.alpha = config.backgroundDisplayAlpha
                 completion(finished)
             }
         case .T2B:
             let originFrame = modal.modalView.frame
             let frameEnd = CGRect(x: originFrame.origin.x, y: backgroundView.bounds.size.height, width: originFrame.size.width, height: originFrame.size.height)
             
-            backgroundView.alpha = self.originalAlpha
+            backgroundView.alpha = config.backgroundDisplayAlpha
             UIView.animate(withDuration: config.showAnimationDuration) {
                 self.backgroundView.alpha = 0.0
                 modal.modalView.frame = frameEnd
             } completion: { finished in
-                self.backgroundView.alpha = self.originalAlpha
+                self.backgroundView.alpha = config.backgroundDisplayAlpha
                 completion(finished)
             }
         }

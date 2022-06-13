@@ -24,7 +24,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        GCModalManager.defaultManager.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         
         var yOffset: CGFloat = 100.0
         let btnHeight: CGFloat = 65.0
@@ -94,11 +93,11 @@ class ViewController: UIViewController {
             
         case 2:
             // basic use
-            let alert = GCBaseModalAlert(frame: frame)
+            let alert = SimplestAlert(frame: frame)
             alert.backgroundColor = .cyan
             let tap3 = UITapGestureRecognizer(target: self, action: #selector(dismissAction(sender:)))
             alert.addGestureRecognizer(tap3)
-            alert.modalViewConfig.duplicateIdentifier = "basic use"
+            alert.modalViewConfig?.duplicateIdentifier = "basic use"
             GCModalManager.defaultManager.add(alert)
         case 3:
             // configs
@@ -129,7 +128,8 @@ class ViewController: UIViewController {
                         completion(true)
                     }
                 },
-                dismissAnimationType: .T2B)
+                dismissAnimationType: .T2B,
+                backgroundColor: UIColor.brown.withAlphaComponent(0.5))
             let tap2 = UITapGestureRecognizer(target: self, action: #selector(dismissAction(sender:)))
             alert.addGestureRecognizer(tap2)
             GCModalManager.defaultManager.add(alert)

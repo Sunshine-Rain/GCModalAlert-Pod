@@ -9,15 +9,19 @@ import UIKit
 
 public protocol Modalable: AnyObject {
     var modalView: UIView { get }
-    var modalViewLifecycle: ModalableLifecycleType { get }
-    var modalViewConfig: ModalableConfig { get }
+    var modalViewLifecycle: ModalableLifecycleType? { get set }
+    var modalViewConfig: ModalableConfig? { get set }
     
-    // modal alert need call this closure
+    /// Modal alert call this closure to dismiss.
     var triggerDismiss: VoidClosure! { get set }
 }
 
 extension Modalable {
     public var identifier: String {
-        return modalViewConfig.duplicateIdentifier ?? NSStringFromClass(type(of: self))
+        return modalViewConfig?.duplicateIdentifier ?? NSStringFromClass(type(of: self))
+    }
+    
+    public func stableConfig() -> ModalableConfig {
+        return modalViewConfig ?? ModalableConfig.default
     }
 }
