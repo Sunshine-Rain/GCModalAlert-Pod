@@ -22,7 +22,7 @@ pod 'GCModalAlert'
 
 ## Preview
 
-![preview](https://github.com/Sunshine-Rain/GCModalAlert-Pod/tree/main/Example/GCModalAlert/preview.gif)
+![image](https://github.com/Sunshine-Rain/GCModalAlert-Pod/tree/main/Example/GCModalAlert/preview.gif)
 
 ## Usage
 
@@ -41,9 +41,12 @@ class BottomPushModal: GCBaseModalAlert {
     override init(frame: CGRect = .zero, lifecycle: ModalableLifecycle = ModalableLifecycle()) {
         super.init(frame: frame, lifecycle: lifecycle)
         setupViews()
-        modalViewConfig.showAnimationType = .B2T
-        modalViewConfig.dismissAnimationType = .T2B
-        modalViewConfig.cancelWhileTapBackground = true
+        
+        var config = ModalableConfig()
+        config.showAnimationType = .B2T
+        config.dismissAnimationType = .T2B
+        config.cancelWhileTapBackground = true
+        modalViewConfig = config
     }
     
     required init?(coder: NSCoder) {
