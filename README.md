@@ -5,6 +5,13 @@
 [![License](https://img.shields.io/cocoapods/l/GCModalAlert.svg?style=flat)](https://cocoapods.org/pods/GCModalAlert)
 [![Platform](https://img.shields.io/cocoapods/p/GCModalAlert.svg?style=flat)](https://cocoapods.org/pods/GCModalAlert)
 
+## Brief
+
+GCModalAlert is a simple modal alert manager for iOS. It contains the following features:
+
+* Auto manage custom alert views(Just add to manager ```GCModalManager.defaultManager.add(alert)```).
+* Plenty of custom configs(See **ModalableConfig**).
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
