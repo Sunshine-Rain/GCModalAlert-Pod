@@ -22,7 +22,7 @@ pod 'GCModalAlert'
 
 ## Preview
 
-![image](https://github.com/Sunshine-Rain/GCModalAlert-Pod/tree/main/Example/GCModalAlert/preview.gif)
+![image](https://github.com/Sunshine-Rain/GCModalAlert-Pod/blob/main/Example/GCModalAlert/preview.gif?raw=true)
 
 ## Usage
 
