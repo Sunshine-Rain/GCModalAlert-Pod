@@ -204,7 +204,6 @@ open class GCModalManager {
         case .fade:
             UIView.animate(withDuration: config.showAnimationDuration) {
                 self.backgroundView.alpha = 0.0
-                modal.modalView.alpha = 0.0
             } completion: { finished in
                 self.backgroundView.alpha = config.backgroundDisplayAlpha
                 completion(finished)
@@ -219,6 +218,7 @@ open class GCModalManager {
                 modal.modalView.frame = frameEnd
             } completion: { finished in
                 self.backgroundView.alpha = config.backgroundDisplayAlpha
+                modal.modalView.frame = originFrame
                 completion(finished)
             }
         }
